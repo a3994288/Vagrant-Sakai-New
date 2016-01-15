@@ -8,10 +8,10 @@ yum -y -q groupinstall "Development Tools"
 echo "-- Yum Group Development Tools Installed --"
 
 
-# ----------------- Get Tomcat 7 ----------------- #
-echo "-- Installing Tomcat 7 --"
+# ----------------- Get Tomcat 8 ----------------- #
+echo "-- Installing Tomcat 8 --"
 
-#get tomcat 7 from apache
+#get tomcat 8 from apache
 wget http://apache.mirror.vexxhost.com/tomcat/tomcat-8/v8.0.30/bin/apache-tomcat-8.0.30.tar.gz -P /opt 1> NUL 2> NUL
 
 #untar
@@ -88,20 +88,25 @@ yum -y -q install mysql-server
 service mysqld restart
 
 # Set root password
-/usr/bin/mysqladmin -u root password 'password'
+/usr/bin/mysqladmin -u root password 'mysqlpwd1'
 
 # Allow remote access
-mysql -u root -ppassword -e "GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' IDENTIFIED BY 'password' WITH GRANT OPTION;"
+mysql -u root -pmysqlpwd1 -e "GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' IDENTIFIED BY 'password' WITH GRANT OPTION;"
 
 # Drop the anonymous users
-mysql -u root -ppassword -e "DROP USER ''@'localhost';"
-mysql -u root -ppassword -e "DROP USER ''@'$(hostname)';"
+mysql -u root -pmysqlpwd1 -e "DROP USER ''@'localhost';"
+mysql -u root -pmysqlpwd1 -e "DROP USER ''@'$(hostname)';"
 
 # Drop the demo database
-mysql -u root -ppassword -e "DROP DATABASE test;"
+mysql -u root -pmysqlpwd1 -e "DROP DATABASE test;"
+
+# Sakai DB and user settings
+mysql -u root -pmysqlpwd1 -e "create database sakai default character set utf8;"
+mysql -u root -pmysqlpwd1 -e "grant all privileges on sakai.* to 'sakai'@'localhost' identified by 'ironchef';"
+mysql -u root -pmysqlpwd1 -e "grant all privileges on sakai.* to 'sakai'@'127.0.0.1' identified by 'ironchef';"
 
 # Flush privledges
-mysql -u root -ppassword -e "FLUSH PRIVILEGES;"
+mysql -u root -pmysqlpwd1 -e "FLUSH PRIVILEGES;"
 
 # Restart the mysqld service
 service mysqld restart
@@ -113,6 +118,7 @@ chkconfig mysqld on
 cd /opt
 wget http://dev.mysql.com/get/Downloads/Connector-J/mysql-connector-java-5.1.37.tar.gz 1> NUL 2> NUL
 tar -xzf mysql-connector-java-5.1.37.tar.gz -C /opt
+# copy to common/lib and lib, not sure which one is gonna need, so copied both
 cp /opt/mysql-connector-java-5.1.37/mysql-connector-java-5.1.37-bin.jar /opt/tomcat/lib
 cd /opt/tomcat
 mkdir common
@@ -162,7 +168,7 @@ echo "PATH=$PATH:/usr/local/maven/bin:/usr/java/jdk1.8.0_60/bin:/opt/tomcat/bin"
 #Reload profile
 source /etc/profile
 
-#Set JAVA_OPTS in tomcat env file
+#Set JAVA_OPTS in tomcat setenv file
 touch /opt/tomcat/bin/setenv.sh
 echo "export JAVA_OPTS='-server -Xms512m -Xmx1024m -XX:PermSize=128m -XX:MaxPermSize=512m -XX:NewSize=192m -XX:MaxNewSize=384m -Djava.awt.headless=true -Dhttp.agent=Sakai -Dorg.apache.jasper.compiler.Parser.STRICT_QUOTE_ESCAPING=false -Dsun.lang.ClassLoader.allowArraySyntax=true'" >> /opt/tomcat/bin/setenv.sh
 
@@ -181,34 +187,49 @@ echo "defaultTransactionIsolationString@javax.sql.BaseDataSource=TRANSACTION_REA
 
 #Set Maven settings file
 #For vagrant user ONLY!!!!!
-cd /home/vagrant
+cd /root
 mkdir .m2
 cd .m2
 touch settings.xml
-echo "<settings xmlns="http://maven.apache.org/POM/4.0.0"" >> /home/vagrant/.m2/settings.xml
-echo "   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"" >> /home/vagrant/.m2/settings.xml
-echo "   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0" >> /home/vagrant/.m2/settings.xml
-echo "                      http://maven.apache.org/xsd/settings-1.0.0.xsd">" >> /home/vagrant/.m2/settings.xml
-echo "  <profiles>" >> /home/vagrant/.m2/settings.xml
-echo "    <profile>" >> /home/vagrant/.m2/settings.xml
-echo "      <id>tomcat5x</id>" >> /home/vagrant/.m2/settings.xml
-echo "      <activation>" >> /home/vagrant/.m2/settings.xml
-echo "        <activeByDefault>true</activeByDefault>" >> /home/vagrant/.m2/settings.xml
-echo "      </activation>" >> /home/vagrant/.m2/settings.xml
-echo "      <properties>" >> /home/vagrant/.m2/settings.xml
-echo "        <appserver.id>tomcat5x</appserver.id>" >> /home/vagrant/.m2/settings.xml
-echo "        <appserver.home>/opt/tomcat</appserver.home>" >> /home/vagrant/.m2/settings.xml
-echo "        <maven.tomcat.home>/opt/tomcat</maven.tomcat.home>" >> /home/vagrant/.m2/settings.xml
-echo "        <sakai.appserver.home>/opt/tomcat</sakai.appserver.home>" >> /home/vagrant/.m2/settings.xml
-echo "        <surefire.reportFormat>plain</surefire.reportFormat>" >> /home/vagrant/.m2/settings.xml
-echo "        <surefire.useFile>false</surefire.useFile>" >> /home/vagrant/.m2/settings.xml
-echo "      </properties>" >> /home/vagrant/.m2/settings.xml
-echo "    </profile>" >> /home/vagrant/.m2/settings.xml
-echo "  </profiles>" >> /home/vagrant/.m2/settings.xml
-echo "</settings>" >> /home/vagrant/.m2/settings.xml
-#maven settings ends
-
-
-
-
+echo '<settings xmlns="http://maven.apache.org/POM/4.0.0"' >> /home/vagrant/.m2/settings.xml
+echo '   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"' >> /home/vagrant/.m2/settings.xml
+echo '   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0' >> /home/vagrant/.m2/settings.xml
+echo '                      http://maven.apache.org/xsd/settings-1.0.0.xsd">' >> /home/vagrant/.m2/settings.xml
+echo '  <profiles>' >> /home/vagrant/.m2/settings.xml
+echo '    <profile>' >> /home/vagrant/.m2/settings.xml
+echo '      <id>tomcat5x</id>' >> /home/vagrant/.m2/settings.xml
+echo '      <activation>' >> /home/vagrant/.m2/settings.xml
+echo '        <activeByDefault>true</activeByDefault>' >> /home/vagrant/.m2/settings.xml
+echo '      </activation>' >> /home/vagrant/.m2/settings.xml
+echo '      <properties>' >> /home/vagrant/.m2/settings.xml
+echo '        <appserver.id>tomcat5x</appserver.id>' >> /home/vagrant/.m2/settings.xml
+echo '        <appserver.home>/opt/tomcat</appserver.home>'>> /home/vagrant/.m2/settings.xml
+echo '        <maven.tomcat.home>/opt/tomcat</maven.tomcat.home>'>> /home/vagrant/.m2/settings.xml
+echo '        <sakai.appserver.home>/opt/tomcat</sakai.appserver.home>' >> /home/vagrant/.m2/settings.xml
+echo '        <surefire.reportFormat>plain</surefire.reportFormat>' >> /home/vagrant/.m2/settings.xml
+echo '       <surefire.useFile>false</surefire.useFile>' >> /home/vagrant/.m2/settings.xml
+echo '      </properties>' >> /home/vagrant/.m2/settings.xml
+echo '    </profile>'>> /home/vagrant/.m2/settings.xml
+echo '  </profiles>'>> /home/vagrant/.m2/settings.xml
+echo '</settings>' >> /home/vagrant/.m2/settings.xml
+# maven settings ends
 echo "-- Environmental Variables Set --"
+
+# start build sakai
+echo "Building Sakai"
+cd /opt/sakai-src/sakai
+mvn install -Dmaven.test.skip
+
+# deploy sakai
+mvn clean install sakai:deploy -Dmaven.tomcat.home=/opt/tomcat
+
+echo "Sakai Deployed"
+
+# GUI settings
+yum -y groupinstall "Desktop" "Desktop Platform" "X Window System" "Fonts"
+yum -y groupinstall "Internet Browser"
+yum -y groupinstall "Office Suite and Productivity"
+
+echo "GUI ready, user:root    password:vagrant]"
+echo "switch to windows use command: startx"
+echo "bye"
