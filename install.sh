@@ -191,27 +191,27 @@ cd /root
 mkdir .m2
 cd .m2
 touch settings.xml
-echo '<settings xmlns="http://maven.apache.org/POM/4.0.0"' >> /home/vagrant/.m2/settings.xml
-echo '   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"' >> /home/vagrant/.m2/settings.xml
-echo '   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0' >> /home/vagrant/.m2/settings.xml
-echo '                      http://maven.apache.org/xsd/settings-1.0.0.xsd">' >> /home/vagrant/.m2/settings.xml
-echo '  <profiles>' >> /home/vagrant/.m2/settings.xml
-echo '    <profile>' >> /home/vagrant/.m2/settings.xml
-echo '      <id>tomcat5x</id>' >> /home/vagrant/.m2/settings.xml
-echo '      <activation>' >> /home/vagrant/.m2/settings.xml
-echo '        <activeByDefault>true</activeByDefault>' >> /home/vagrant/.m2/settings.xml
-echo '      </activation>' >> /home/vagrant/.m2/settings.xml
-echo '      <properties>' >> /home/vagrant/.m2/settings.xml
-echo '        <appserver.id>tomcat5x</appserver.id>' >> /home/vagrant/.m2/settings.xml
-echo '        <appserver.home>/opt/tomcat</appserver.home>'>> /home/vagrant/.m2/settings.xml
-echo '        <maven.tomcat.home>/opt/tomcat</maven.tomcat.home>'>> /home/vagrant/.m2/settings.xml
-echo '        <sakai.appserver.home>/opt/tomcat</sakai.appserver.home>' >> /home/vagrant/.m2/settings.xml
-echo '        <surefire.reportFormat>plain</surefire.reportFormat>' >> /home/vagrant/.m2/settings.xml
-echo '       <surefire.useFile>false</surefire.useFile>' >> /home/vagrant/.m2/settings.xml
-echo '      </properties>' >> /home/vagrant/.m2/settings.xml
-echo '    </profile>'>> /home/vagrant/.m2/settings.xml
-echo '  </profiles>'>> /home/vagrant/.m2/settings.xml
-echo '</settings>' >> /home/vagrant/.m2/settings.xml
+echo '<settings xmlns="http://maven.apache.org/POM/4.0.0"' >> /root/.m2/settings.xml
+echo '   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"' >> /root/.m2/settings.xml
+echo '   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0' >> /root/.m2/settings.xml
+echo '                      http://maven.apache.org/xsd/settings-1.0.0.xsd">' >> /root/.m2/settings.xml
+echo '  <profiles>' >> /root/.m2/settings.xml
+echo '    <profile>' >> /root/.m2/settings.xml
+echo '      <id>tomcat5x</id>' >> /root/.m2/settings.xml
+echo '      <activation>' >> /root/.m2/settings.xml
+echo '        <activeByDefault>true</activeByDefault>' >> /root/.m2/settings.xml
+echo '      </activation>' >> /root/.m2/settings.xml
+echo '      <properties>' >> /root/.m2/settings.xml
+echo '        <appserver.id>tomcat5x</appserver.id>' >> /root/.m2/settings.xml
+echo '        <appserver.home>/opt/tomcat</appserver.home>'>> /root/.m2/settings.xml
+echo '        <maven.tomcat.home>/opt/tomcat</maven.tomcat.home>'>> /root/.m2/settings.xml
+echo '        <sakai.appserver.home>/opt/tomcat</sakai.appserver.home>' >> /root/.m2/settings.xml
+echo '        <surefire.reportFormat>plain</surefire.reportFormat>' >> /root/.m2/settings.xml
+echo '       <surefire.useFile>false</surefire.useFile>' >> /root/.m2/settings.xml
+echo '      </properties>' >> /root/.m2/settings.xml
+echo '    </profile>'>> /root/.m2/settings.xml
+echo '  </profiles>'>> /root/.m2/settings.xml
+echo '</settings>' >> /root/.m2/settings.xml
 # maven settings ends
 echo "-- Environmental Variables Set --"
 
