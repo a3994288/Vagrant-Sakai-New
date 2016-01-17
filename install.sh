@@ -114,7 +114,7 @@ service mysqld restart
 # Set mysqld to start on system start
 chkconfig mysqld on
 
-#Install the mysql oracle connector
+# Install the mysql oracle connector
 cd /opt
 wget http://dev.mysql.com/get/Downloads/Connector-J/mysql-connector-java-5.1.37.tar.gz 1> NUL 2> NUL
 tar -xzf mysql-connector-java-5.1.37.tar.gz -C /opt
@@ -149,20 +149,18 @@ echo "-- Sakai source cloned into /opt/sakai-src --"
 # ----------------- Set Environmental Variables ----------------- #
 echo "-- Setting Environmental Variables --"
 
-#Set JAVA_HOME
+# Set JAVA_HOME
 echo "export JAVA_HOME=/usr/java/jdk1.8.0_60" >> /etc/profile
-#echo "export PATH=/usr/java/jdk1.8.0_60/bin:$PATH" >> /etc/profile
 
-#Set CATALINA_HOME
+# Set CATALINA_HOME
 echo "export CATALINA_HOME=/opt/tomcat" >> /etc/profile
-#echo "export PATH=/opt/tomcat/bin:$PATH" >> /etc/profile
 
-#Set Maven
+# Set Maven
 echo "export MAVEN2_HOME=/usr/local/maven" >> /etc/profile
 echo "export M2_HOME=/usr/local/maven" >> /etc/profile
 echo "export MAVEN_OPTS='-Xms128m -Xmx796m -XX:PermSize=64m -XX:MaxPermSize=172m'" >> /etc/profile
 
-#add ALL PATH in /etc/profile
+# add ALL PATH in /etc/profile
 echo "PATH=$PATH:/usr/local/maven/bin:/usr/java/jdk1.8.0_60/bin:/opt/tomcat/bin" >> /etc/profile
 
 #Reload profile
@@ -173,7 +171,7 @@ touch /opt/tomcat/bin/setenv.sh
 echo "export JAVA_OPTS='-server -Xms512m -Xmx1024m -XX:PermSize=128m -XX:MaxPermSize=512m -XX:NewSize=192m -XX:MaxNewSize=384m -Djava.awt.headless=true -Dhttp.agent=Sakai -Dorg.apache.jasper.compiler.Parser.STRICT_QUOTE_ESCAPING=false -Dsun.lang.ClassLoader.allowArraySyntax=true'" >> /opt/tomcat/bin/setenv.sh
 
 #Set sakai.properties
-cd $CATALINA_HOME
+cd /opt/tomcat
 mkdir sakai
 touch sakai.properties
 echo "username@javax.sql.BaseDataSource=sakai" >> /opt/tomcat/sakai/sakai.properties
@@ -216,16 +214,28 @@ echo '</settings>' >> /root/.m2/settings.xml
 echo "-- Environmental Variables Set --"
 
 # start build sakai
-echo "Building Sakai"
-cd /opt/sakai-src/sakai
-mvn install -Dmaven.test.skip
+# echo "Building Sakai"
+# cd /opt/sakai-src/sakai
+# mvn install -Dmaven.test.skip
+# echo "Sakai Built"
 
 # deploy sakai
-mvn clean install sakai:deploy -Dmaven.tomcat.home=/opt/tomcat
+# echo "Deploying Sakai"
+# mvn clean install sakai:deploy -Dmaven.tomcat.home=/opt/tomcat
 
-echo "Sakai Deployed"
+# echo "Sakai Deployed"
 
+# Download Eclipse
+
+echo "Eclipse setup"
+cd /opt
+wget http://eclipse.mirror.rafal.ca/technology/epp/downloads/release/mars/1/eclipse-jee-mars-1-linux-gtk-x86_64.tar.gz 1> NUL 2> NUL
+# Expand the file
+tar -xvzf eclipse-jee-mars-1-linux-gtk-x86_64.tar.gz
+
+echo "Eclipse finished"
 # GUI settings
+echo "Install gui"
 yum -y groupinstall "Desktop" "Desktop Platform" "X Window System" "Fonts"
 yum -y groupinstall "Internet Browser"
 yum -y groupinstall "Office Suite and Productivity"
