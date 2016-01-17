@@ -211,22 +211,42 @@ echo '    </profile>'>> /root/.m2/settings.xml
 echo '  </profiles>'>> /root/.m2/settings.xml
 echo '</settings>' >> /root/.m2/settings.xml
 # maven settings ends
+
+# mysql cnf file settings
+echo "deleting cnf file"
+cd /etc
+rm my.cnf
+echo "recreate cnf file"
+touch my.cnf
+echo "[mysqld]" >> /etc/my.cnf
+echo "default-storage-engine = InnoDB" >> /etc/my.cnf
+echo "innodb_file_per_table" >> /etc/my.cnf
+echo "character-set-server=utf8" >> /etc/my.cnf
+echo "collation-server=utf8_general_ci" >> /etc/my.cnf
+echo "lower_case_table_names =1" >> /etc/my.cnf
+echo "datadir=/var/lib/mysql" >> /etc/my.cnf
+echo "socket=/var/lib/mysql/mysql.sock" >> /etc/my.cnf
+echo "user=mysql" >> /etc/my.cnf
+echo "# Disabling symbolic-links is recommended to prevent assorted security risks" >> /etc/my.cnf
+echo "symbolic-links=0" >> /etc/my.cnf
+echo "[mysqld_safe]" >> /etc/my.cnf
+echo "log-error=/var/log/mysqld.log" >> /etc/my.cnf
+echo "pid-file=/var/run/mysqld/mysqld.pid" >> /etc/my.cnf
+
+# cnf ends
 echo "-- Environmental Variables Set --"
 
 # start build sakai
-# echo "Building Sakai"
-# cd /opt/sakai-src/sakai
-# mvn install -Dmaven.test.skip
-# echo "Sakai Built"
-
+echo "Building Sakai"
+cd /opt/sakai-src/sakai
+mvn install -Dmaven.test.skip
+echo "Sakai Built"
 # deploy sakai
-# echo "Deploying Sakai"
-# mvn clean install sakai:deploy -Dmaven.tomcat.home=/opt/tomcat
-
+echo "Deploying Sakai"
+mvn clean install sakai:deploy -Dmaven.tomcat.home=/opt/tomcat
 # echo "Sakai Deployed"
 
 # Download Eclipse
-
 echo "Eclipse setup"
 cd /opt
 wget http://eclipse.mirror.rafal.ca/technology/epp/downloads/release/mars/1/eclipse-jee-mars-1-linux-gtk-x86_64.tar.gz 1> NUL 2> NUL
