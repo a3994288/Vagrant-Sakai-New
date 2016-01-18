@@ -128,6 +128,9 @@ cd /opt
 cp /opt/mysql-connector-java-5.1.37/mysql-connector-java-5.1.37-bin.jar /opt/tomcat/common/lib
 rm -rf /opt/mysql-connector-java-5.1.37
 
+# restart mysql
+service mysqld restart
+
 echo "-- Mysql Installed --"
 
 
