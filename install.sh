@@ -240,13 +240,13 @@ echo "pid-file=/var/run/mysqld/mysqld.pid" >> /etc/my.cnf
 echo "-- Environmental Variables Set --"
 
 # start build sakai
-echo "Building Sakai"
-cd /opt/sakai-src/sakai
-mvn install -Dmaven.test.skip
-echo "Sakai Built"
+# echo "Building Sakai"
+# cd /opt/sakai-src/sakai
+# mvn install -Dmaven.test.skip
+# echo "Sakai Built"
 # deploy sakai
-echo "Deploying Sakai"
-mvn clean install sakai:deploy -Dmaven.tomcat.home=/opt/tomcat
+# echo "Deploying Sakai"
+# mvn clean install sakai:deploy -Dmaven.tomcat.home=/opt/tomcat
 # echo "Sakai Deployed"
 
 # Download Eclipse
@@ -262,7 +262,8 @@ echo "Install gui"
 yum -y groupinstall "Desktop" "Desktop Platform" "X Window System" "Fonts"
 yum -y groupinstall "Internet Browser"
 yum -y groupinstall "Office Suite and Productivity"
-
+service mysqld restart
 echo "GUI ready, user:root    password:vagrant]"
 echo "switch to windows use command: startx"
 echo "bye"
+reboot
