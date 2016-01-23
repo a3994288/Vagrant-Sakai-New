@@ -1,4 +1,8 @@
 # Vagrant-Sakai-New
 
-most of the code is copied from
-git clone https://github.com/kingmook/Vagrant-Sakai
+References:
+https://github.com/kingmook/Vagrant-Sakai
+https://confluence.sakaiproject.org/display/BOOT/Development+Environment+Setup+Walkthrough
+
+For full installation guide, please check "Guide.pdf"
+
