@@ -144,7 +144,8 @@ mkdir /opt/sakai-src
 cd /opt/sakai-src
 
 #clone the most recent version of sakai
-git clone https://github.com/a3994288/sakai.git
+# git clone https://github.com/a3994288/sakai.git
+git clone https://github.com/sakaiproject/sakai
 
 echo "-- Sakai source cloned into /opt/sakai-src --"
 
