@@ -12,7 +12,7 @@ echo "-- Yum Group Development Tools Installed --"
 echo "-- Installing Tomcat 8 --"
 
 #get tomcat 8 from apache
-wget http://apache.mirror.vexxhost.com/tomcat/tomcat-8/v8.0.30/bin/apache-tomcat-8.0.30.tar.gz -P /opt 1> NUL 2> NUL
+wget http://archive.apache.org/dist/tomcat/tomcat-8/v8.0.30/bin/apache-tomcat-8.0.30.tar.gz -P /opt 1> NUL 2> NUL
 
 #untar
 tar -zxf /opt/apache-tomcat-8.0.30.tar.gz -C /opt
